@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './PeopleList.css';
 
-export function PeopleList({ people }) {
+export function PeopleList({ people, onSelectPerson }) {
   const [expandedPerson, setExpandedPerson] = useState(null);
   const [sortBy, setSortBy] = useState('appearances'); // 'appearances' or 'name'
 
@@ -19,8 +19,6 @@ export function PeopleList({ people }) {
 
   return (
     <div className="people-list-container">
-      <h2>People Database</h2>
-
       {/* Controls */}
       <div className="people-list-controls">
         <div>
@@ -53,6 +51,7 @@ export function PeopleList({ people }) {
             {/* Person Header */}
             <div
               className={`person-header ${expandedPerson === person.name ? 'expanded' : ''}`}
+              onClick={() => onSelectPerson(person)}
             >
               <div className="person-name-section">
                 <h3>
