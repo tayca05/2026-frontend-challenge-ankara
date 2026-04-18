@@ -19,6 +19,14 @@ export function PeopleList({ people, onSelectPerson }) {
 
   return (
     <div className="people-list-container">
+      {/* Introduction */}
+      <div className="people-list-intro">
+        <h2>Investigation Database</h2>
+        <p>
+            Click on any person to see their complete submission history, including check-ins, sightings, messages, and notes. Use the search bar to quickly find specific people.
+        </p>
+      </div>
+
       {/* Controls */}
       <div className="people-list-controls">
         <div>
