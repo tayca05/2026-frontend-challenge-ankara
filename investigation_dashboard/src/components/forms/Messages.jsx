@@ -15,30 +15,60 @@ export function MessagesForm({ personName, allData }) {
   }
 
   return (
-    <div className="form-submissions">
-      {personMessages.map((message, idx) => (
-        <div key={message.id} className="submission-item">
-          <div className="submission-header">
-            <h4>Message #{idx + 1}</h4>
-            <span className="submission-date">{message.created_at}</span>
-          </div>
+    <div className="messages-chat">
+      {personMessages.map((message) => {
+        const date = new Date(message.created_at);
+        const dateStr = date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+        const timeStr = date.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit'
+        });
 
-          <div className="submission-fields">
-            {Object.entries(message.answers).map(([fieldId, field]) => {
-              if (field.type === 'control_head' || field.type === 'control_button') {
-                return null;
-              }
+        // Get all message content fields (excluding person name and control fields)
+        const messageContent = Object.entries(message.answers)
+          .filter(([fieldId, field]) => {
+            return fieldId !== '2' && field.type !== 'control_head' && field.type !== 'control_button';
+          })
+          .map(([fieldId, field]) => field.answer)
+          .filter(answer => answer)[0]; // Get the first non-empty answer as main message
 
-              return (
-                <div key={fieldId} className="field-item">
-                  <label className="field-label">{field.text}</label>
-                  <p className="field-value">{field.answer || '(No response)'}</p>
+        // Get all other data for display
+        const otherData = Object.entries(message.answers)
+          .filter(([fieldId, field]) => {
+            return fieldId !== '2' && fieldId !== '3' && field.type !== 'control_head' && field.type !== 'control_button';
+          });
+
+        // Try to find recipient/other party (field 3 might be companion/recipient)
+        const recipient = message.answers?.['3']?.answer || 'Unknown';
+
+        return (
+          <div key={message.id} className="message-group">
+            <div className="message-date">{dateStr}</div>
+            <div className="message-flow">
+              <div className="message-from">From: <strong>{personName}</strong></div>
+              <div className="message-to">To: <strong>{recipient}</strong></div>
+            </div>
+            <div className="message-bubble-wrapper">
+              <div className="message-bubble">
+                <p className="message-text">{messageContent || 'No message'}</p>
+              </div>
+              <span className="message-time">{timeStr}</span>
+            </div>
+            <div className="message-metadata">
+              {otherData.map(([fieldId, field]) => (
+                <div key={fieldId} className="metadata-item">
+                  <span className="metadata-label">{field.text}:</span>
+                  <span className="metadata-value">{field.answer}</span>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

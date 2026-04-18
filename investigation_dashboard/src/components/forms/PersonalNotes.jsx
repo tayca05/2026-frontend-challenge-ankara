@@ -37,12 +37,6 @@ export function PersonalNotesForm({ personName, allData }) {
               );
             })}
           </div>
-
-          <div className="submission-meta">
-            <span>ID: {note.id.slice(-8)}</span>
-            <span>Status: {note.status}</span>
-            <span>IP: {note.ip}</span>
-          </div>
         </div>
       ))}
     </div>

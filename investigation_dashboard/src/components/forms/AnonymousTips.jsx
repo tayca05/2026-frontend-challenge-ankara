@@ -5,9 +5,9 @@ export function AnonymousTipsForm({ personName, allData }) {
     return <div className="form-no-data">No anonymous tips data available</div>;
   }
 
-  // Filter submissions for this person (if they have a name field)
+  // Filter submissions for this person
   const personTips = allData.anonymous_tips.filter(
-    submission => submission.answers?.['2']?.answer === personName || personName === 'Anonymous'
+    submission => submission.answers?.['2']?.answer === personName
   );
 
   if (personTips.length === 0) {
@@ -36,12 +36,6 @@ export function AnonymousTipsForm({ personName, allData }) {
                 </div>
               );
             })}
-          </div>
-
-          <div className="submission-meta">
-            <span>ID: {tip.id.slice(-8)}</span>
-            <span>Status: {tip.status}</span>
-            <span>IP: {tip.ip}</span>
           </div>
         </div>
       ))}
