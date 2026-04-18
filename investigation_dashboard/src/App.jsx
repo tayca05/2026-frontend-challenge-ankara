@@ -3,23 +3,30 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
-import { getFormSubmissions, getAllSubmissions } from './util/api'
+import { getAllSubmissions, extractPeople } from './util/api'
+import { PeopleList } from './components/PeopleList'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [apiResult, setApiResult] = useState(null)
+  const [allData, setAllData] = useState(null)
+  const [people, setPeople] = useState(null)
   const [loading, setLoading] = useState(false)
 
-  const testApi = async () => {
+  const loadInvestigationData = async () => {
     setLoading(true)
     try {
-      console.log('Testing API...')
-      const data = await getFormSubmissions('checkins')
+      console.log('Loading investigation data...')
+      const data = await getAllSubmissions()
       console.log('Success! Data:', data)
-      setApiResult({ success: true, data, message: `Fetched ${data.length} checkin(s)` })
+      setAllData(data)
+      
+      // Extract people from all submissions
+      const extractedPeople = extractPeople(data)
+      console.log('Extracted people:', extractedPeople)
+      setPeople(extractedPeople)
     } catch (error) {
       console.error('Error:', error.message)
-      setApiResult({ success: false, message: error.message })
+      setAllData({ error: error.message })
     } finally {
       setLoading(false)
     }
@@ -27,121 +34,11 @@ function App() {
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-        <button 
-          onClick={testApi}
-          disabled={loading}
-          style={{ marginLeft: '10px', padding: '10px 20px' }}
-        >
-          {loading ? 'Testing...' : 'Test Jotform API'}
-        </button>
-        {apiResult && (
-          <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}>
-            <strong>{apiResult.success ? '✅ Success' : '❌ Error'}:</strong> {apiResult.message}
-            {apiResult.data && <pre>{JSON.stringify(apiResult.data.slice(0, 2), null, 2)}</pre>}
-          </div>
-        )}
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {people && people.length > 0 && (
+        <section id="people-section" style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+          <PeopleList people={people} />
+        </section>
+      )}
 
       <div className="ticks"></div>
       <section id="spacer"></section>

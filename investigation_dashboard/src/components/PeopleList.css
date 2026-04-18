@@ -1,0 +1,403 @@
+/* PeopleList Component Styles */
+
+:root {
+  --color-sightings: #4CAF50;
+  --color-checkins: #2196F3;
+  --color-messages: #FF9800;
+  --color-personal-notes: #9C27B0;
+  --color-anonymous-tips: #F44336;
+  
+  --text-primary: #1a1a1a;
+  --text-secondary: #666;
+  --text-muted: #999;
+  --bg-light: #f8f9fa;
+  --bg-lighter: #f0f0f0;
+  --border-color: #e0e0e0;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.people-list-container h2 {
+  margin: 0 0 24px 0;
+  color: var(--text-primary);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+/* Controls Section */
+.people-list-controls {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--bg-light) 0%, #ffffff 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  box-shadow: var(--shadow-sm);
+}
+
+.people-list-controls-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.people-list-select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.people-list-select:hover {
+  border-color: var(--color-checkins);
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.people-list-select:focus {
+  outline: none;
+  border-color: var(--color-checkins);
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.15);
+}
+
+.people-list-controls-summary {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.people-list-controls-summary strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* People Grid - 4 Columns */
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.person-card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.person-card:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-checkins);
+  transform: translateY(-2px);
+}
+
+/* Person Header */
+.person-header {
+  padding: 16px;
+  background: linear-gradient(135deg, var(--bg-light) 0%, white 100%);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.person-header:hover {
+  background-color: var(--bg-lighter);
+}
+
+.person-header.expanded {
+  background-color: var(--bg-light);
+}
+
+.person-name-section h3 {
+  margin: 0 0 6px 0;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.person-name-section p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.person-toggle-icon {
+  font-size: 16px;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+/* Expanded Content */
+.person-expanded {
+  padding: 16px;
+  background-color: white;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Section Title */
+.person-section-title {
+  margin: 0 0 12px 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.person-section-title.submissions {
+  color: var(--color-checkins);
+}
+
+.person-section-title.mentions {
+  color: var(--color-messages);
+}
+
+/* Grid for submissions/mentions */
+.submissions-grid,
+.mentions-grid {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mentions-grid {
+  margin-bottom: 0;
+}
+
+/* Submission Card */
+.submission-card {
+  padding: 10px;
+  background-color: #f0f7ff;
+  border-left: 3px solid var(--color-checkins);
+  border-radius: 4px;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.submission-card:hover {
+  background-color: #e3f2fd;
+}
+
+.submission-card.sightings {
+  background-color: #f1f8f4;
+  border-left-color: var(--color-sightings);
+}
+
+.submission-card.checkins {
+  background-color: #f0f7ff;
+  border-left-color: var(--color-checkins);
+}
+
+.submission-card.messages {
+  background-color: #fff8f1;
+  border-left-color: var(--color-messages);
+}
+
+.submission-card.personal-notes {
+  background-color: #f9f6fd;
+  border-left-color: var(--color-personal-notes);
+}
+
+.submission-card.anonymous-tips {
+  background-color: #ffe8e8;
+  border-left-color: var(--color-anonymous-tips);
+}
+
+/* Mention Card */
+.mention-card {
+  padding: 10px;
+  background-color: #fff8f1;
+  border-left: 3px solid var(--color-messages);
+  border-radius: 4px;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.mention-card:hover {
+  background-color: #fff3e0;
+}
+
+.mention-card.sightings {
+  background-color: #f1f8f4;
+  border-left-color: var(--color-sightings);
+}
+
+.mention-card.checkins {
+  background-color: #f0f7ff;
+  border-left-color: var(--color-checkins);
+}
+
+.mention-card.messages {
+  background-color: #fff8f1;
+  border-left-color: var(--color-messages);
+}
+
+.mention-card.personal-notes {
+  background-color: #f9f6fd;
+  border-left-color: var(--color-personal-notes);
+}
+
+.mention-card.anonymous-tips {
+  background-color: #ffe8e8;
+  border-left-color: var(--color-anonymous-tips);
+}
+
+/* Submission/Mention Header */
+.submission-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.mention-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.submission-form-name,
+.mention-form-name {
+  margin: 0 0 3px 0;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+.submission-form-name.sightings,
+.mention-form-name.sightings {
+  color: var(--color-sightings);
+}
+
+.submission-form-name.checkins,
+.mention-form-name.checkins {
+  color: var(--color-checkins);
+}
+
+.submission-form-name.messages,
+.mention-form-name.messages {
+  color: var(--color-messages);
+}
+
+.submission-form-name.personal-notes,
+.mention-form-name.personal-notes {
+  color: var(--color-personal-notes);
+}
+
+.submission-form-name.anonymous-tips,
+.mention-form-name.anonymous-tips {
+  color: var(--color-anonymous-tips);
+}
+
+.submission-date,
+.mention-date {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.submission-id,
+.mention-id {
+  font-size: 10px;
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 3px 6px;
+  border-radius: 3px;
+  color: var(--text-muted);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: 'Monaco', 'Courier New', monospace;
+  flex-shrink: 0;
+}
+
+/* Submission Metadata */
+.submission-metadata {
+  font-size: 10px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+/* Summary Section */
+.person-summary {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .people-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .people-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .people-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .people-list-controls {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .people-list-controls-summary {
+    align-self: unset;
+  }
+
+  .submission-header,
+  .mention-header {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .submission-id,
+  .mention-id {
+    align-self: flex-start;
+  }
+
+  .submission-metadata {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .person-expanded {
+    max-height: 400px;
+  }
+}

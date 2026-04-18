@@ -78,3 +78,60 @@ export const getSubmission = async (formName, submissionId) => {
   }
 };
 
+/**
+ * Extract all unique people from all form submissions
+ * @param {object} allData - Object with form names as keys, submissions as values
+ * @returns {Promise<object>} Object with people and their appearances in forms
+ */
+export const extractPeople = (allData) => {
+  const people = {};
+
+  // Field mappings for different forms (which field contains person name)
+  const personNameFields = {
+    sightings: '2',      // personName field
+    checkins: '2',       // Adjust based on actual field structure
+    messages: '2',       // Adjust based on actual field structure
+    personal_notes: '2', // Adjust based on actual field structure
+    anonymous_tips: null // Anonymous tips may not have person names
+  };
+
+  // Process each form
+  Object.entries(allData).forEach(([formName, submissions]) => {
+    if (!Array.isArray(submissions)) return;
+
+    const personField = personNameFields[formName];
+    if (!personField) return;
+
+    submissions.forEach((submission) => {
+      const personName = submission.answers?.[personField]?.answer;
+      
+      if (personName && personName.trim()) {
+        // Initialize person record if not exists
+        if (!people[personName]) {
+          people[personName] = {
+            name: personName,
+            submissions: [],        // Forms they submitted
+            mentions: [],           // Forms they were mentioned in
+            totalAppearances: 0
+          };
+        }
+
+        // Add this form appearance as a submission (they filled out the form)
+        people[personName].submissions.push({
+          form: formName,
+          submissionId: submission.id,
+          date: submission.created_at,
+          ip: submission.ip,
+          status: submission.status
+        });
+        people[personName].totalAppearances++;
+      }
+    });
+  });
+
+  // Sort by number of appearances
+  const sortedPeople = Object.values(people).sort((a, b) => b.totalAppearances - a.totalAppearances);
+  
+  return sortedPeople;
+};
+
