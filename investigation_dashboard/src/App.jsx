@@ -3,9 +3,27 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+import { getFormSubmissions, getAllSubmissions } from './util/api'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [apiResult, setApiResult] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  const testApi = async () => {
+    setLoading(true)
+    try {
+      console.log('Testing API...')
+      const data = await getFormSubmissions('checkins')
+      console.log('Success! Data:', data)
+      setApiResult({ success: true, data, message: `Fetched ${data.length} checkin(s)` })
+    } catch (error) {
+      console.error('Error:', error.message)
+      setApiResult({ success: false, message: error.message })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
@@ -27,6 +45,19 @@ function App() {
         >
           Count is {count}
         </button>
+        <button 
+          onClick={testApi}
+          disabled={loading}
+          style={{ marginLeft: '10px', padding: '10px 20px' }}
+        >
+          {loading ? 'Testing...' : 'Test Jotform API'}
+        </button>
+        {apiResult && (
+          <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}>
+            <strong>{apiResult.success ? '✅ Success' : '❌ Error'}:</strong> {apiResult.message}
+            {apiResult.data && <pre>{JSON.stringify(apiResult.data.slice(0, 2), null, 2)}</pre>}
+          </div>
+        )}
       </section>
 
       <div className="ticks"></div>
